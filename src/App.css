@@ -1,0 +1,24 @@
+.message {
+  display: flex;
+  gap: 2rem;
+}
+
+.message .user {
+  font-weight: bold;
+}
+
+.content {
+  display: grid;
+  grid-template-areas: "users messages";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+}
+
+.users {
+  grid-area: users;
+}
+
+.messages {
+  grid-area: messages;
+}

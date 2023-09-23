@@ -1,0 +1,138 @@
+.messages {
+  background-color: lightseagreen;
+  padding-bottom: 4rem;
+  position: relative;
+}
+
+.messages form {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 0.5rem;
+}
+
+.messages input {
+  flex: 1;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  outline: none;
+  border: 2px solid white;
+  padding: 0.25rem 1rem;
+  color: lightseagreen;
+}
+
+.messages button {
+  background-color: lightseagreen;
+  outline: 1px solid green;
+  outline: none;
+  border: 2px solid white;
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+  padding: 0.25rem 1.5rem;
+  border-radius: 1rem;
+}
+.message {
+  margin: 0.1rem auto;
+}
+
+.status {
+  font-size: 0.75em;
+  /* letter-spacing: 0.1em; */
+}
+
+.header {
+  padding: 1rem;
+  box-shadow: 0 0 2px black;
+  /* margin-bottom: 2rem; */
+}
+
+.isMy {
+  text-align: right;
+  display: flex;
+  justify-content: end;
+}
+
+.message.isMy.arrow .text {
+  border-radius: 1.5rem 0 1.5rem 1.5rem;
+  &::after {
+    /* background-color: lightblue; */
+    right: -0.75rem;
+    left: initial;
+    scale: -1 1;
+  }
+
+  /* &:hover::after {
+    scale: -1 1;
+  } */
+}
+
+/* .message.isMy:not(:has(+ .message.isMy)) .text {
+  background-color: black;
+} */
+
+.message .text {
+  padding: 0.5rem 1rem;
+  width: fit-content;
+  background-color: lightgreen;
+  position: relative;
+  border-radius: 1.5rem;
+}
+.message.arrow .text {
+  border-radius: 0 1.5rem 1.5rem 1.5rem;
+  &::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    /* right: 0; */
+    left: -0.75rem;
+    aspect-ratio: 1/1;
+    height: 50%;
+    width: 1.5rem;
+    background-color: lightgreen;
+    border-radius: 0.5rem;
+    clip-path: polygon(0 0, 100% 100%, 100% 0, 0 0);
+  }
+}
+
+.content {
+  padding: 1rem;
+}
+
+.typing {
+}
+
+.typing .text span {
+  color: blue;
+  display: inline-block;
+  animation: osscilate 0.8s ease 0.3s infinite;
+  /* translate: 0 100%; */
+}
+
+.typing .text span:nth-child(2) {
+  animation: osscilate 0.8s ease 0.4s infinite;
+}
+
+.typing .text span:nth-child(3) {
+  animation: osscilate 0.8s ease 0.5s infinite;
+}
+
+@keyframes osscilate {
+  0% {
+    transform: translateY(10%);
+  }
+
+  15% {
+    transform: translateY(-50%);
+  }
+
+  30% {
+    transform: translateY(10%);
+  }
+
+  100% {
+    transform: translateY(10%);
+  }
+}

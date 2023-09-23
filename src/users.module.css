@@ -1,0 +1,19 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  /* width: min-content; */
+  background-color: lightblue;
+  padding: 1rem;
+}
+
+.user.selected {
+  background-color: cyan;
+}
+.user input {
+  appearance: none;
+  position: absolute;
+}
+
+.loggedUser {
+  margin: 1rem;
+}
