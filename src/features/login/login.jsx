@@ -1,4 +1,6 @@
-function sumbit(e, socket) {
+import socket from "../../socket";
+
+function sumbit(e) {
   e.preventDefault();
   const username = e.target.username.value;
   const password = e.target.password.value;
@@ -6,9 +8,9 @@ function sumbit(e, socket) {
   socket.connect();
 }
 
-export default function Login({ socket }) {
+export default function Login({}) {
   return (
-    <form action="" onSubmit={(e) => sumbit(e, socket)}>
+    <form action="" onSubmit={(e) => sumbit(e)}>
       <div className="formGroup">
         <label htmlFor="username">Username</label>
         <input type="text" name="username" id="username" />
