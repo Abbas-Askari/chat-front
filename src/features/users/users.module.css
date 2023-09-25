@@ -6,6 +6,10 @@
   padding: 1rem;
 }
 
+.user {
+  position: relative;
+}
+
 .user.selected {
   background-color: cyan;
 }
@@ -16,4 +20,17 @@
 
 .loggedUser {
   margin: 1rem;
+}
+
+.unread {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  aspect-ratio: 1/1;
+  height: auto;
+  width: min-content;
+  background-color: lightgreen;
+  padding: 0.35rem;
+  border-radius: 50%;
 }

@@ -11,8 +11,19 @@ import {
   otherUserSignedIn,
   otherUserSignedOut,
   signedIn,
+  finishedGettingTypedTo,
+  gettingTypedTo,
 } from "./features/users/usersSlice";
-import { gotMessage } from "./features/messages/messagesSlice";
+
+import {
+  gotMessage,
+  mess,
+  messagesGotRead,
+  readAllMessagesOfUserAsync,
+  receivedByOther,
+  recievedMessageAsync,
+  startedEmptyChat,
+} from "./features/messages/messagesSlice";
 
 const token = localStorage.getItem("token");
 
@@ -72,6 +83,7 @@ function App() {
     const callback = (users) => {
       console.log({ users });
       dispatch(gotUsers(users));
+      users.forEach((user) => dispatch(startedEmptyChat({ userId: user.id })));
     };
     socket.on("users", callback);
 
@@ -81,15 +93,20 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const callback = (message, cb) => {
+    const callback = (message) => {
+      // cb({ ok: true });
       dispatch(gotMessage(message));
-      cb({ ok: true });
+      dispatch(recievedMessageAsync(message));
+      if (selectedUserId === message.sentBy) {
+        console.log({ sentBy: message.sentBy, selectedUserId });
+        dispatch(readAllMessagesOfUserAsync(selectedUserId));
+      }
     };
     socket.on("recieve_message", callback);
     return () => {
       socket.off("recieve_message", callback);
     };
-  }, []);
+  }, [selectedUserId]);
 
   useEffect(() => {
     const callback = (id) => {
@@ -111,82 +128,55 @@ function App() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const updateMessages = (message) => {
-  //     let id =
-  //       message.sentBy === loggedUser.id ? message.sentTo : message.sentBy;
-  //     setMessages(() => {
-  //       const bundle = messages.find((bundle) => bundle.id === id);
-  //       if (bundle) {
-  //         return messages.map((b) =>
-  //           b === bundle ? { id, messages: [...bundle.messages, message] } : b
-  //         );
-  //       } else {
-  //         return [...messages, { id, messages: [message] }];
-  //       }
-  //     });
-  //     // message.map();
-  //     // setMessages();
-  //   };
+  useEffect(() => {
+    const callback = ({ messageId, bundleId }) => {
+      dispatch(receivedByOther({ messageId, bundleId }));
+    };
+    socket.on("received_by_other", callback);
+    return () => {
+      socket.off("received_by_other", callback);
+    };
+  }, []);
 
-  //   socket.on("recieve_message", updateMessages);
-  //   return () => {
-  //     socket.off("recieve_message", updateMessages);
-  //   };
-  // }, [loggedUser, messages]);
+  useEffect(() => {
+    const callback = (userId) => {
+      dispatch(messagesGotRead({ bundleId: userId }));
+    };
+    socket.on("messages_got_read", callback);
+    return () => {
+      socket.off("messages_got_read", callback);
+    };
+  }, []);
 
-  // useEffect(() => {
-  //   const connect = (data) => {
-  //     setIsLoggedIn(true);
-  //   };
+  useEffect(() => {
+    const callback = (userId) => {
+      dispatch(messagesGotRead({ bundleId: userId }));
+    };
+    socket.on("messages_got_read", callback);
+    return () => {
+      socket.off("messages_got_read", callback);
+    };
+  }, []);
 
-  //   const online = (id) => {
-  //     setUsers((users) =>
-  //       users.map((user) =>
-  //         user.id === id ? { ...user, status: "Online" } : user
-  //       )
-  //     );
-  //   };
+  useEffect(() => {
+    const callback = (userId) => {
+      dispatch(gettingTypedTo(userId));
+    };
+    socket.on("typing_from", callback);
+    return () => {
+      socket.off("typing_from", callback);
+    };
+  }, []);
 
-  //   const offline = (id) => {
-  //     setUsers((users) =>
-  //       users.map((user) =>
-  //         user.id === id ? { ...user, status: "Offline" } : user
-  //       )
-  //     );
-  //   };
-
-  //   const getUserData = (data) => {
-  //     if (data.token) localStorage.setItem("token", data.token);
-  //     console.log("Setting token to: ", data.token, { data });
-  //     setLoggedUser(data.user);
-  //   };
-
-  //   function log(data, ...args) {
-  //     console.log({ data, args });
-  //   }
-
-  //   const users = (usrs) => {
-  //     setUsers(usrs);
-  //     setSelected(usrs[0]);
-  //   };
-
-  //   socket.on("connect", connect);
-  //   socket.on("users", users);
-  //   socket.on("session", getUserData);
-  //   socket.on("online", online);
-  //   socket.on("offline", offline);
-  //   socket.onAny(log);
-
-  //   return () => {
-  //     socket.off("connect", connect);
-  //     socket.off("users", users);
-  //     socket.off("session", getUserData);
-  //     socket.off("online", online);
-  //     socket.off("offline", offline);
-  //     socket.offAny(log);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const callback = (userId) => {
+      dispatch(finishedGettingTypedTo(userId));
+    };
+    socket.on("ended_typing_from", callback);
+    return () => {
+      socket.off("ended_typing_from", callback);
+    };
+  }, []);
 
   return (
     <>

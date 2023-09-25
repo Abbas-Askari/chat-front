@@ -14,11 +14,19 @@ export default function Message({ message, arrow }) {
     " " +
     (arrow ? styles.arrow : "");
 
+  const status = message.received ? "✓✓" : message.sent ? "✓" : "";
+
   return (
     <div className={className}>
       <div className={styles.text}>{message.content}</div>
       {/* <div className={styles.date}>{message.date}</div> */}
-      <span className={styles.status}>✓</span>
+      <span
+        className={styles.status}
+        style={{ color: message.read ? "blue" : "gray" }}
+      >
+        {status}
+      </span>
+      {/* {isMy && <span className={styles.time}>7:42 PM</span>} */}
     </div>
   );
 }

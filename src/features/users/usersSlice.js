@@ -18,6 +18,20 @@ export const getLoggedUser = createAsyncThunk("getLoggedUser", async (auth) => {
   });
 });
 
+export const startedTypingToAsync = createAsyncThunk(
+  "typeTo",
+  async (userId) => {
+    socket.emit("typing_to", userId);
+  }
+);
+
+export const finishedTypingToAsync = createAsyncThunk(
+  "finishedTypingTo",
+  async (userId) => {
+    socket.emit("ended_typing_to", userId);
+  }
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState: {
@@ -47,6 +61,16 @@ const usersSlice = createSlice({
     selectedUserWithId: (state, action) => {
       state.selectedUserId = action.payload;
     },
+
+    gettingTypedTo: (state, action) => {
+      console.log({ userId: action.payload });
+      state.users.find((user) => user.id === action.payload).status = "Typing";
+    },
+
+    finishedGettingTypedTo: (state, action) => {
+      console.log({ userId: action.payload });
+      state.users.find((user) => user.id === action.payload).status = "Online";
+    },
   },
   //   extraReducers: {},
 });
@@ -57,6 +81,9 @@ export const {
   gotUsers,
   signedIn,
   selectedUserWithId,
+  readAllMessagesOfUser,
+  gettingTypedTo,
+  finishedGettingTypedTo,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;

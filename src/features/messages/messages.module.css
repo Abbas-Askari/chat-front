@@ -23,8 +23,13 @@
   color: lightseagreen;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
 .messages button {
-  background-color: lightseagreen;
+  background-color: transparent;
   outline: 1px solid green;
   outline: none;
   border: 2px solid white;
@@ -35,7 +40,7 @@
   border-radius: 1rem;
 }
 .message {
-  margin: 0.1rem auto;
+  /* margin: 0.1rem auto; */
   position: relative;
 }
 
@@ -50,38 +55,43 @@
   /* margin-bottom: 2rem; */
 }
 
-.isMy {
-  text-align: right;
-  display: flex;
-  justify-content: end;
+.isMy.message {
+  align-self: flex-end;
+  padding-right: 1.5rem;
+  /* color: black; */
+  /* color: white; */
+  /* background-color: cyan; */
+  /* background-color: maroon; */
+  padding-bottom: 0.75rem;
 }
 
-.message.isMy.arrow .text {
+.message.isMy.arrow {
   border-radius: 1.5rem 0 1.5rem 1.5rem;
+
   &::after {
-    /* background-color: lightblue; */
     right: -0.75rem;
     left: initial;
     scale: -1 1;
   }
-
-  /* &:hover::after {
-    scale: -1 1;
-  } */
 }
 
-/* .message.isMy:not(:has(+ .message.isMy)) .text {
-  background-color: black;
-} */
-
-.message .text {
+.message {
+  max-width: 75%;
+  align-self: flex-start;
   padding: 0.5rem 1rem;
   width: fit-content;
+  color: #ff8800;
   background-color: lightgreen;
+  /* color: gray; */
+  /* background-color: navy; */
+
   position: relative;
   border-radius: 1.5rem;
+  margin: 1px;
+  /* margin: 0.1rem; */
 }
-.message.arrow .text {
+
+.message.arrow {
   border-radius: 0 1.5rem 1.5rem 1.5rem;
   &::after {
     position: absolute;
@@ -92,7 +102,7 @@
     aspect-ratio: 1/1;
     height: 50%;
     width: 1.5rem;
-    background-color: lightgreen;
+    background-color: inherit;
     border-radius: 0.5rem;
     clip-path: polygon(0 0, 100% 100%, 100% 0, 0 0);
   }
@@ -106,7 +116,7 @@
 }
 
 .typing .text span {
-  color: blue;
+  /* color: blue; */
   display: inline-block;
   animation: osscilate 0.8s ease 0.3s infinite;
   /* translate: 0 100%; */
@@ -140,6 +150,14 @@
 
 .status {
   position: absolute;
-  top: 0;
-  left: 0;
+  bottom: 0;
+  right: 0.75rem;
+  letter-spacing: -0.5em;
+}
+
+.time {
+  position: absolute;
+  bottom: 0;
+  right: 1.5rem;
+  font-size: 0.7rem;
 }

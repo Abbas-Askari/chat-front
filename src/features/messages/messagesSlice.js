@@ -5,6 +5,15 @@ import socket from "../../socket";
 
 // })
 
+export const readAllMessagesOfUserAsync = createAsyncThunk(
+  "read",
+  async (userId, { dispatch, getState }) => {
+    console.log("Reading async");
+    socket.emit("read_all_messages_of_user", userId);
+    dispatch(readAllMessagesOfUser(userId));
+  }
+);
+
 export const sentMessageAsync = createAsyncThunk(
   "messages/send",
   async (message, { getState, dispatch }) => {
@@ -25,6 +34,13 @@ export const sentMessageAsync = createAsyncThunk(
   }
 );
 
+export const recievedMessageAsync = createAsyncThunk(
+  "messages/recieved",
+  async (message) => {
+    socket.emit("recieved_message_by_user", message);
+  }
+);
+
 const messagesSlice = createSlice({
   name: "messages",
   initialState: {
@@ -37,6 +53,10 @@ const messagesSlice = createSlice({
         .messages.push(action.payload);
     },
     gotMessage: (state, action) => {
+      // console.log(
+      //   "got this message: " + action.payload.content,
+      //   action.payload
+      // );
       state.bundles
         .find((bundle) => bundle.id === action.payload.sentBy)
         .messages.push(action.payload);
@@ -56,10 +76,41 @@ const messagesSlice = createSlice({
         messages: [],
       });
     },
+
+    messagesGotRead: (state, action) => {
+      state.bundles
+        .find((bundle) => bundle.id === action.payload.bundleId)
+        .messages.forEach((message) => (message.read = true));
+    },
+
+    receivedByOther: (state, action) => {
+      console.log({ payload: action.payload });
+      const message = state.bundles
+        .find((bundle) => bundle.id === action.payload.bundleId)
+        .messages.find((message) => message.id === action.payload.messageId);
+      // console.log({ message });
+      // if (message)
+      message.received = true;
+    },
+
+    readAllMessagesOfUser: (state, action) => {
+      console.log("done Reading");
+      state.bundles
+        .find((bundle) => bundle.id === action.payload)
+        .messages.forEach((m) => (m.read = true));
+    },
   },
 });
 
-export var { gotMessage, startedEmptyChat, sentSuccessfully, sentMessage } =
-  messagesSlice.actions;
+export var {
+  gotMessage,
+  startedEmptyChat,
+  sentSuccessfully,
+  sentMessage,
+  receivedByOther,
+  mess,
+  messagesGotRead,
+  readAllMessagesOfUser,
+} = messagesSlice.actions;
 
 export default messagesSlice.reducer;

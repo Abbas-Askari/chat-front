@@ -16,21 +16,7 @@ export default function Messages() {
   const selectedUser = users.find((user) => user.id === selectedUserId);
   const loggedUser = users.find((user) => user.id === loggedUserId);
 
-  if (loggedUserId === null) {
-    console.error("Why no loggedUserId?");
-  }
-
-  // console.log({ bundles, selectedUserId });
-  const selectedUserBundle = bundles.find(
-    (bundle) => bundle.id === selectedUser.id
-  );
-  let messages = selectedUserBundle ? selectedUserBundle.messages : [];
-  useEffect(() => {
-    // console.log({ bundles, selectedUserId });
-    if (!selectedUserBundle && selectedUserId !== null) {
-      dispatch(startedEmptyChat({ userId: selectedUserId }));
-    }
-  }, [selectedUserBundle, selectedUserId]);
+  console.log({ bundles });
 
   if (!selectedUser) {
     return (
@@ -41,6 +27,23 @@ export default function Messages() {
       </>
     );
   }
+
+  if (loggedUserId === null) {
+    console.error("Why no loggedUserId?");
+  }
+
+  // console.log({ bundles, selectedUserId });
+  const selectedUserBundle = bundles.find(
+    (bundle) => bundle.id === selectedUserId
+  );
+
+  let messages = selectedUserBundle ? selectedUserBundle.messages : [];
+  // useEffect(() => {
+  //   // console.log({ bundles, selectedUserId });
+  //   if (!selectedUserBundle && selectedUserId !== null) {
+  //     dispatch(startedEmptyChat({ userId: selectedUserId }));
+  //   }
+  // }, [selectedUserBundle, selectedUserId]);
 
   //   setMessages((messages) => {
   //     const bundle = messages.find((bundle) => bundle.id === message.sentTo);
@@ -58,6 +61,16 @@ export default function Messages() {
   //   e.target.message.value = "";
   // }
 
+  const typing = selectedUser.status === "Typing" && (
+    <div className={styles.typing + " " + styles.message + " " + styles.arrow}>
+      <div className={styles.text}>
+        <span>•</span>
+        <span>•</span>
+        <span>•</span>
+      </div>
+    </div>
+  );
+
   return (
     <div className={styles.messages + " messages"}>
       <div className={styles.header}>
@@ -65,19 +78,10 @@ export default function Messages() {
         <div className={styles.status}>{selectedUser.status}</div>
       </div>
       <div className={styles.content}>
-        <div
-          className={styles.typing + " " + styles.message + " " + styles.arrow}
-        >
-          <div className={styles.text}>
-            <span>•</span>
-            <span>•</span>
-            <span>•</span>
-          </div>
-        </div>
         {messages &&
           messages.map((message, i) => (
             <Message
-              key={message.id}
+              key={message.id || i}
               message={message}
               arrow={
                 (i !== 0 && message.sentBy !== messages[i - 1].sentBy) ||
@@ -85,6 +89,7 @@ export default function Messages() {
               }
             />
           ))}
+        {typing}
       </div>
       <MessageForm />
     </div>
