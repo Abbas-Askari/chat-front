@@ -1,16 +1,20 @@
+import { useDispatch } from "react-redux";
 import socket from "../../socket";
-
-function sumbit(e) {
-  e.preventDefault();
-  const username = e.target.username.value;
-  const password = e.target.password.value;
-  socket.auth = { username, password };
-  socket.connect();
-}
+import { initServerListenersAsync } from "../../appSlice";
 
 export default function Login({}) {
+  const dispatch = useDispatch();
+
+  function submit(e) {
+    e.preventDefault();
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+    socket.auth = { username, password };
+    dispatch(initServerListenersAsync());
+    socket.connect();
+  }
   return (
-    <form action="" onSubmit={(e) => sumbit(e)}>
+    <form action="" onSubmit={submit}>
       <div className="formGroup">
         <label htmlFor="username">Username</label>
         <input type="text" name="username" id="username" />

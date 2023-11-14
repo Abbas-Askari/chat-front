@@ -5,4 +5,8 @@ body {
 
 #root {
   height: 100%;
+  font-family: sans-serif;
+
+  --profile-bg: #6a7175;
+  --header: #202c33;
 }

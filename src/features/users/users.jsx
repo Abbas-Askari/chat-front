@@ -1,6 +1,8 @@
 import styles from "./users.module.css";
 import User from "./user";
 import { useSelector } from "react-redux";
+import Header from "./header";
+import Search from "./search";
 
 export default function Users({}) {
   const { users, loggedUserId } = useSelector((state) => state.users);
@@ -9,13 +11,14 @@ export default function Users({}) {
 
   return (
     <div className={styles.users + " users"}>
-      <div className={styles.loggedUser}>
-        Logged In as {loggedUser.username}
+      <Header />
+      <Search />
+      <div className={styles.userslist}>
+        {users?.map(
+          (user) =>
+            loggedUser.id !== user.id && <User key={user.id} user={user} />
+        )}
       </div>
-      {users?.map(
-        (user) =>
-          loggedUser.id !== user.id && <User key={user.id} user={user} />
-      )}
     </div>
   );
 }

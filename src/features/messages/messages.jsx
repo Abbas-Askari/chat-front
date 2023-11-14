@@ -6,7 +6,8 @@ import usersSlice, { otherUserSignedIn } from "../users/usersSlice";
 import { gotMessage, startedEmptyChat } from "./messagesSlice";
 import { useEffect } from "react";
 import MessageForm from "./send";
-
+import Icon from "@mdi/react";
+import { mdiAccount } from "@mdi/js";
 export default function Messages() {
   const { bundles } = useSelector((state) => state.messages);
   const { loggedUserId, selectedUserId, users } = useSelector(
@@ -74,8 +75,11 @@ export default function Messages() {
   return (
     <div className={styles.messages + " messages"}>
       <div className={styles.header}>
-        <div className={styles.name}>{selectedUser.username}</div>
-        <div className={styles.status}>{selectedUser.status}</div>
+        <Icon path={mdiAccount} size={1.5} />
+        <div className={styles.right}>
+          <div className={styles.name}>{selectedUser.username}</div>
+          <div className={styles.status}>{selectedUser.status}</div>
+        </div>
       </div>
       <div className={styles.content}>
         {messages &&

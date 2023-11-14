@@ -57,6 +57,7 @@ const messagesSlice = createSlice({
       //   "got this message: " + action.payload.content,
       //   action.payload
       // );
+      console.log(state.bundles.length);
       state.bundles
         .find((bundle) => bundle.id === action.payload.sentBy)
         .messages.push(action.payload);

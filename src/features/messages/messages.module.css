@@ -1,7 +1,8 @@
 .messages {
-  background-color: lightseagreen;
+  background-color: #0b141a;
   padding-bottom: 4rem;
   position: relative;
+  color: white;
 }
 
 .messages form {
@@ -51,17 +52,26 @@
 
 .header {
   padding: 1rem;
-  box-shadow: 0 0 2px black;
+  /* box-shadow: 0 0 2px black; */
   /* margin-bottom: 2rem; */
+  font-size: 1.2rem;
+  background-color: var(--header);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header svg {
+  background-color: var(--profile-bg);
+  border-radius: 50%;
+  /* background-color: red; */
 }
 
 .isMy.message {
   align-self: flex-end;
   padding-right: 1.5rem;
-  /* color: black; */
-  /* color: white; */
-  /* background-color: cyan; */
-  /* background-color: maroon; */
+  background-color: #005c4b;
+
   padding-bottom: 0.75rem;
 }
 
@@ -80,10 +90,7 @@
   align-self: flex-start;
   padding: 0.5rem 1rem;
   width: fit-content;
-  color: #ff8800;
-  background-color: lightgreen;
-  /* color: gray; */
-  /* background-color: navy; */
+  background-color: #202c33;
 
   position: relative;
   border-radius: 1.5rem;
@@ -98,14 +105,18 @@
     content: "";
     top: 0;
     /* right: 0; */
-    left: -0.75rem;
+    left: -0.5rem;
     aspect-ratio: 1/1;
     height: 50%;
-    width: 1.5rem;
+    width: 1rem;
     background-color: inherit;
-    border-radius: 0.5rem;
+    /* border-radius: 0.5rem; */
     clip-path: polygon(0 0, 100% 100%, 100% 0, 0 0);
   }
+}
+
+.right :last-child {
+  font-size: 0.65em;
 }
 
 .content {
@@ -149,10 +160,10 @@
 }
 
 .status {
-  position: absolute;
-  bottom: 0;
-  right: 0.75rem;
-  letter-spacing: -0.5em;
+  /* position: absolute; */
+  /* bottom: 0; */
+  /* right: 0.75rem; */
+  /* letter-spacing:  -0.5em; */
 }
 
 .time {
