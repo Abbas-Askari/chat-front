@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 import { getLoggedUser } from "../users/usersSlice";
 import styles from "./messages.module.css";
+import { useEffect, useRef } from "react";
 
 export default function Message({ message, arrow }) {
   const { loggedUserId } = useSelector((state) => state.users);
-
+  const lastMessageRef = useRef();
   const isMy = loggedUserId === message.sentBy;
 
   const className =
@@ -14,18 +15,24 @@ export default function Message({ message, arrow }) {
     " " +
     (arrow ? styles.arrow : "");
 
-  const status = message.received ? "✓✓" : message.sent ? "✓" : "";
+  const status = message.recived ? "✓✓" : message.sent ? "✓" : "";
+
+  useEffect(() => {
+    lastMessageRef.current.scrollIntoView({ behavior: "instant" });
+  }, []);
 
   return (
-    <div className={className}>
+    <div className={className} ref={lastMessageRef}>
       <div className={styles.text}>{message.content}</div>
       {/* <div className={styles.date}>{message.date}</div> */}
-      <span
-        className={styles.status}
-        style={{ color: message.read ? "blue" : "gray" }}
-      >
-        {status}
-      </span>
+      {isMy && (
+        <span
+          className={styles.status}
+          style={{ color: message.read ? "blue" : "gray" }}
+        >
+          {status}
+        </span>
+      )}
       {/* {isMy && <span className={styles.time}>7:42 PM</span>} */}
     </div>
   );

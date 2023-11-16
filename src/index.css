@@ -5,8 +5,24 @@ body {
 
 #root {
   height: 100%;
-  font-family: sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif,
+    sans-serif;
+  /* font-family: sans-serif; */
 
   --profile-bg: #6a7175;
   --header: #202c33;
+}
+
+input::placeholder {
+  color: #ffffff80;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--header);
+  border-radius: 5px;
 }

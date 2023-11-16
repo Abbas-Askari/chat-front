@@ -11,25 +11,23 @@ export default function User({ user }) {
 
   const bundles = useSelector((state) => state.messages.bundles);
   const numUnread = bundles
-    .find((bundle) => bundle.id === user.id)
+    .find((bundle) => bundle.id === user._id)
     .messages.reduce(
-      (total, message) => total + (!message.read && message.sentBy === user.id),
+      (total, message) =>
+        total + (!message.read && message.sentBy === user._id),
       0
     );
-  console.log({
-    messages: bundles.find((bundle) => bundle.id === user.id).messages,
-  });
-
   const className =
-    styles.user + " " + (selectedUserId === user.id ? styles.selected : "");
+    styles.user + " " + (selectedUserId === user._id ? styles.selected : "");
 
   return (
     <>
       <div
         className={className}
         onClick={() => {
-          dispatch(selectedUserWithId(user.id));
-          dispatch(readAllMessagesOfUserAsync(user.id));
+          dispatch(selectedUserWithId(user._id));
+          console.log(user._id);
+          dispatch(readAllMessagesOfUserAsync(user._id));
         }}
       >
         <img src={react}></img>

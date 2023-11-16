@@ -1,0 +1,82 @@
+.container {
+  height: 100vh;
+  background-color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--header);
+}
+
+.form {
+  /* background-color: lightgray; */
+  border: 1px solid white;
+  color: white;
+  padding: 2rem;
+  max-width: 80vw;
+  margin: 0 auto;
+  border-radius: 1rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  max-width: 16rem;
+  width: 100%;
+  /* gap: 0.5em; */
+}
+
+.formGroup input {
+  /* background-color: #2a3942; */
+  background-color: var(--profile-bg);
+  padding: 0.5em 1em;
+  color: inherit;
+  outline: none;
+  font-size: inherit;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.formGroup input::placeholder {
+  color: #ffffff80;
+}
+
+.header {
+  font-size: 2em;
+}
+
+.form button {
+  width: 100%;
+  font-size: inherit;
+  background-color: var(--profile-bg);
+  outline: none;
+  border: none;
+  padding: 0.5em;
+  color: inherit;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  &:active {
+    filter: brightness(90%);
+    scale: 0.95;
+  }
+}
+
+.form .formGroup span.error {
+  color: lightcoral;
+  font-size: 0.8em;
+}
+
+.form .change span {
+  color: lightblue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.change {
+  user-select: none;
+}

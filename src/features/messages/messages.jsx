@@ -14,10 +14,8 @@ export default function Messages() {
     (state) => state.users
   );
   const dispatch = useDispatch();
-  const selectedUser = users.find((user) => user.id === selectedUserId);
+  const selectedUser = users.find((user) => user._id === selectedUserId);
   const loggedUser = users.find((user) => user.id === loggedUserId);
-
-  console.log({ bundles });
 
   if (!selectedUser) {
     return (
@@ -33,7 +31,6 @@ export default function Messages() {
     console.error("Why no loggedUserId?");
   }
 
-  // console.log({ bundles, selectedUserId });
   const selectedUserBundle = bundles.find(
     (bundle) => bundle.id === selectedUserId
   );

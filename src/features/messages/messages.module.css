@@ -1,35 +1,54 @@
 .messages {
   background-color: #0b141a;
-  padding-bottom: 4rem;
   position: relative;
   color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* overflow: hidden; */
 }
 
-.messages form {
-  position: absolute;
+.messages .messageform {
+  /* position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
+  right: 0; */
   display: flex;
   padding: 0.5rem;
+  background-color: #202c33;
+  color: white;
+  flex: 0;
+  /* height: 3rem; */
+  /* box-sizing: border-box; */
 }
 
 .messages input {
   flex: 1;
   font-size: 1.2rem;
-  border-radius: 1rem;
+  border-radius: 0.5em;
   outline: none;
-  border: 2px solid white;
+  /* border: 2px solid white; */
+  border: none;
   padding: 0.25rem 1rem;
-  color: lightseagreen;
+  color: inherit;
+  background-color: #2a3942;
 }
 
 .content {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 1;
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  max-width: 75vw; /* specified max width so that overflowing messages dont overflow the page*/
+  /* max width is 75% in display grid of .content the width of .messages is 3fr and 1fr of users */
+  box-sizing: border-box;
 }
 
-.messages button {
+/* .messages button {
   background-color: transparent;
   outline: 1px solid green;
   outline: none;
@@ -39,19 +58,36 @@
   font-size: 1.25rem;
   padding: 0.25rem 1.5rem;
   border-radius: 1rem;
-}
-.message {
-  /* margin: 0.1rem auto; */
-  position: relative;
+  background-color: red;
+} */
+.messages button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block: 0.5em;
+  opacity: 1;
+  transition: all 0.15s ease;
+  transform-origin: 50% 50%;
 }
 
-.status {
+.messages button.gray {
+  scale: 0.9 0.9;
+  opacity: 0.4;
+}
+
+.header .status {
   font-size: 0.75em;
   /* letter-spacing: 0.1em; */
 }
 
 .header {
   padding: 1rem;
+  flex: 0;
   /* box-shadow: 0 0 2px black; */
   /* margin-bottom: 2rem; */
   font-size: 1.2rem;
@@ -59,6 +95,8 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  height: 4rem;
+  box-sizing: border-box;
 }
 
 .header svg {
@@ -79,14 +117,14 @@
   border-radius: 1.5rem 0 1.5rem 1.5rem;
 
   &::after {
-    right: -0.75rem;
+    right: -0.5rem;
     left: initial;
     scale: -1 1;
   }
 }
 
 .message {
-  max-width: 75%;
+  max-width: 55%;
   align-self: flex-start;
   padding: 0.5rem 1rem;
   width: fit-content;
@@ -96,6 +134,12 @@
   border-radius: 1.5rem;
   margin: 1px;
   /* margin: 0.1rem; */
+  /* overflow: hidden; */
+}
+
+.message .text {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .message.arrow {
@@ -107,7 +151,7 @@
     /* right: 0; */
     left: -0.5rem;
     aspect-ratio: 1/1;
-    height: 50%;
+    height: 2ch;
     width: 1rem;
     background-color: inherit;
     /* border-radius: 0.5rem; */
@@ -117,13 +161,6 @@
 
 .right :last-child {
   font-size: 0.65em;
-}
-
-.content {
-  padding: 1rem;
-}
-
-.typing {
 }
 
 .typing .text span {
@@ -159,11 +196,12 @@
   }
 }
 
-.status {
-  /* position: absolute; */
-  /* bottom: 0; */
-  /* right: 0.75rem; */
-  /* letter-spacing:  -0.5em; */
+.message .status {
+  position: absolute;
+  bottom: 0;
+  right: 0.75rem;
+  letter-spacing: -0.5em;
+  pointer-events: none;
 }
 
 .time {

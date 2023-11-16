@@ -6,6 +6,8 @@ import {
   finishedTypingToAsync,
   startedTypingToAsync,
 } from "../users/usersSlice";
+import Icon from "@mdi/react";
+import { mdiSend } from "@mdi/js";
 
 export default function MessageForm() {
   const { selectedUserId, loggedUserId } = useSelector((state) => state.users);
@@ -20,7 +22,7 @@ export default function MessageForm() {
       sentBy: loggedUserId,
       // sentBy: userLoggedIn.id,
       date: new Date().toISOString(),
-      received: false,
+      recived: false,
       sent: false,
       read: false,
       content: content,
@@ -32,7 +34,7 @@ export default function MessageForm() {
   }
 
   return (
-    <form action="" onSubmit={submit}>
+    <form action="" onSubmit={submit} className={styles.messageform}>
       <input
         type="text"
         name="message"
@@ -48,7 +50,10 @@ export default function MessageForm() {
           }
         }}
       />
-      <button>Send</button>
+      <button className={content === "" ? styles.gray : ""}>
+        <Icon path={mdiSend} size={1} />
+      </button>
+      {/* <button>Send</button> */}
     </form>
   );
 }

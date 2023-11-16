@@ -53,21 +53,24 @@ const messagesSlice = createSlice({
         .messages.push(action.payload);
     },
     gotMessage: (state, action) => {
-      // console.log(
-      //   "got this message: " + action.payload.content,
-      //   action.payload
-      // );
-      console.log(state.bundles.length);
+      let bundleId = action.payload.message.sentBy;
+      if (action.payload.message.sentBy === action.payload.loggedUserId)
+        bundleId = action.payload.message.sentTo;
+      console.log({
+        bundleId,
+        userid: action.payload.loggedUserId,
+        payload: action.payload,
+      });
+
       state.bundles
-        .find((bundle) => bundle.id === action.payload.sentBy)
-        .messages.push(action.payload);
+        .find((bundle) => bundle.id === bundleId)
+        .messages.push(action.payload.message);
     },
     sentSuccessfully: (state, action) => {
       // acion.payload must contain messageId and bundleId
       const message = state.bundles
         .find((bundle) => bundle.id === action.payload.bundleId)
         .messages.find((message) => message.date === action.payload.date);
-      console.log({ message });
       message.sent = true;
       message.id = action.payload.messageId;
     },
@@ -85,13 +88,11 @@ const messagesSlice = createSlice({
     },
 
     receivedByOther: (state, action) => {
-      console.log({ payload: action.payload });
       const message = state.bundles
         .find((bundle) => bundle.id === action.payload.bundleId)
         .messages.find((message) => message.id === action.payload.messageId);
-      // console.log({ message });
       // if (message)
-      message.received = true;
+      message.recived = true;
     },
 
     readAllMessagesOfUser: (state, action) => {

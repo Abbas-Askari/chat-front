@@ -9,9 +9,9 @@ import { mdiAccount, mdiDotsVertical } from "@mdi/js";
 const Header = () => {
   const { users, loggedUserId } = useSelector((state) => state.users);
 
-  const loggedUser = users.find((user) => user.id === loggedUserId);
+  const loggedUser = users.find((user) => user._id === loggedUserId);
 
-  return (
+return (
     <div className={styles.header}>
       <Icon path={mdiAccount} size={1.5} />
       <div className={styles.name}>{loggedUser.username}</div>

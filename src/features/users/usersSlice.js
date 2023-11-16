@@ -37,16 +37,17 @@ const usersSlice = createSlice({
   initialState: {
     loggedUserId: null,
     selectedUserId: null,
+    query: "",
     users: [],
   },
   reducers: {
     otherUserSignedIn: (state, action) => {
-      state.users.find((user) => user.id === action.payload.id).status =
+      state.users.find((user) => user._id === action.payload.id).status =
         "Online";
     },
 
     otherUserSignedOut: (state, action) => {
-      state.users.find((user) => user.id === action.payload.id).status =
+      state.users.find((user) => user._id === action.payload.id).status =
         "Offline";
     },
 
@@ -63,16 +64,17 @@ const usersSlice = createSlice({
     },
 
     gettingTypedTo: (state, action) => {
-      console.log({ userId: action.payload });
-      state.users.find((user) => user.id === action.payload).status = "Typing";
+      state.users.find((user) => user._id === action.payload).status = "Typing";
     },
 
     finishedGettingTypedTo: (state, action) => {
-      console.log({ userId: action.payload });
-      state.users.find((user) => user.id === action.payload).status = "Online";
+      state.users.find((user) => user._id === action.payload).status = "Online";
+    },
+
+    changedQuery: (state, action) => {
+      state.query = action.payload;
     },
   },
-  //   extraReducers: {},
 });
 
 export const {
@@ -81,6 +83,7 @@ export const {
   gotUsers,
   signedIn,
   selectedUserWithId,
+  changedQuery,
   readAllMessagesOfUser,
   gettingTypedTo,
   finishedGettingTypedTo,

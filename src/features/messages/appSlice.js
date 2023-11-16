@@ -3,7 +3,7 @@ import {
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import socket from "./socket";
+import socket from "../../socket";
 
 import {
   otherUserSignedIn,
@@ -13,7 +13,7 @@ import {
   finishedGettingTypedTo,
   gotUsers,
   signedIn,
-} from "./features/users/usersSlice";
+} from "../users/usersSlice";
 
 import {
   gotMessage,
@@ -23,28 +23,22 @@ import {
   receivedByOther,
   recievedMessageAsync,
   startedEmptyChat,
-} from "./features/messages/messagesSlice";
+} from "./messagesSlice";
 
 export const initServerListenersAsync = createAsyncThunk(
   "initServerListeners",
   async (_, { getState, dispatch }) => {
-    console.log("reigtering all callback");
-    console.log("registering users callback");
     socket.on("users", (users) => {
-      console.log("getting users!");
-      console.log({ users });
       dispatch(gotUsers(users));
-      users.forEach((user) => dispatch(startedEmptyChat({ userId: user.id })));
+      users.forEach((user) => dispatch(startedEmptyChat({ userId: user._id })));
     });
 
     // socket.on("users", callback);
 
     socket.on("session", ({ user, token }) => {
       if (token) {
-        console.log("Setting localStorage Token to : ", token);
         localStorage.setItem("token", token);
       }
-      console.log({ user });
       dispatch(signedIn(user));
     });
 

@@ -6,9 +6,9 @@ import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import socket from "./socket.js";
 
-socket.onAny((args) => {
-  console.log({ args });
-});
+// socket.onAny((args) => {
+//   console.log({ args });
+// });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
