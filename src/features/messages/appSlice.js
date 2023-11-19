@@ -8,7 +8,6 @@ import socket from "../../socket";
 import {
   otherUserSignedIn,
   otherUserSignedOut,
-  readAllMessagesOfUser,
   gettingTypedTo,
   finishedGettingTypedTo,
   gotUsers,
@@ -16,12 +15,8 @@ import {
 } from "../users/usersSlice";
 
 import {
-  gotMessage,
-  mess,
   messagesGotRead,
-  readAllMessagesOfUserAsync,
-  receivedByOther,
-  recievedMessageAsync,
+  recivedByOther,
   startedEmptyChat,
 } from "./messagesSlice";
 
@@ -61,21 +56,16 @@ export const initServerListenersAsync = createAsyncThunk(
 
     (() => {
       const callback = ({ messageId, bundleId }) => {
-        dispatch(receivedByOther({ messageId, bundleId }));
+        console.log("Recived messages!");
+        dispatch(recivedByOther({ messageId, bundleId }));
       };
-      socket.on("received_by_other", callback);
+      socket.on("recived_by_other", callback);
     })();
 
     (() => {
       const callback = (userId) => {
-        dispatch(messagesGotRead({ bundleId: userId }));
-      };
-      socket.on("messages_got_read", callback);
-    })();
-
-    (() => {
-      const callback = (userId) => {
-        dispatch(messagesGotRead({ bundleId: userId }));
+        const loggedUserId = getState().users.loggedUserId;
+        dispatch(messagesGotRead({ bundleId: userId, loggedUserId }));
       };
       socket.on("messages_got_read", callback);
     })();

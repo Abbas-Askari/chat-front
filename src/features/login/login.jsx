@@ -3,16 +3,17 @@ import socket from "../../socket";
 import { initServerListenersAsync } from "../messages/appSlice";
 import styles from "./login.module.css";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { clearedErrors, recivedError } from "./connectionSlice";
 
 export default function Login({}) {
   const dispatch = useDispatch();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [filename, setFilename] = useState("Select a file");
+  const formRef = useRef();
   const { connectionError, connected } = useSelector(
     (state) => state.connection
   );
-  console.log({ connectionError, connected });
 
   async function submit(e) {
     e.preventDefault();
@@ -23,16 +24,19 @@ export default function Login({}) {
       dispatch(initServerListenersAsync());
       socket.connect();
     } else {
-      // console.log("Not yet implementd!");
+      const formData = new FormData(formRef.current);
       const res = await fetch("http://localhost:3000/users", {
         method: "POST",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        body: JSON.stringify({ username, password }),
+        body: formData,
       });
+      // const res = await fetch("http://localhost:3000/users", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-type": "application/json; charset=UTF-8",
+      //   },
+      //   body: JSON.stringify({ username, password, file }),
+      // });
       const data = await res.json();
-      console.log({ data });
       if (res.ok) {
         dispatch(clearedErrors());
         setIsSignUp(false);
@@ -48,7 +52,14 @@ export default function Login({}) {
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} action="" onSubmit={submit}>
+      <form
+        ref={formRef}
+        className={styles.form}
+        // action="http://localhost:3000/users"
+        // method="POST"
+        onSubmit={submit}
+        encType="multipart/form-data"
+      >
         <div className={styles.header}>{isSignUp ? "Sign Up" : "Sign In"}</div>
         <div className={styles.formGroup}>
           <label htmlFor="username">Username</label>
@@ -71,6 +82,25 @@ export default function Login({}) {
           />
           {/* <span className={styles.error}>Incorrect Username</span> */}
         </div>
+
+        {isSignUp && (
+          <div className={styles.formGroup}>
+            <label htmlFor="avatar">Avatar</label>
+            <label>
+              {filename}
+              <input
+                onChange={(e) => {
+                  console.log({ e: e.target });
+                  setFilename(e.target.value.split("\\").at(-1));
+                }}
+                type="file"
+                name="avatar"
+                id="avatar"
+              />
+            </label>
+          </div>
+        )}
+
         <div className={styles.formGroup}>
           <button>{isSignUp ? "Sign Up" : "Log In"}</button>
         </div>

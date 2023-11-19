@@ -18,11 +18,11 @@ input::placeholder {
   color: #ffffff80;
 }
 
-::-webkit-scrollbar {
+body ::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-thumb {
+body ::-webkit-scrollbar-thumb {
   background-color: var(--header);
   border-radius: 5px;
 }

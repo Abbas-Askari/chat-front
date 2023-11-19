@@ -1,17 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./messages.module.css";
-import { sentMessage, sentMessageAsync } from "./messagesSlice";
+import { selectedFiles, sentMessage, sentMessageAsync } from "./messagesSlice";
 import { useEffect, useState } from "react";
 import {
   finishedTypingToAsync,
   startedTypingToAsync,
 } from "../users/usersSlice";
 import Icon from "@mdi/react";
-import { mdiSend } from "@mdi/js";
+import {
+  mdiPaperclip,
+  mdiPaperclipCheck,
+  mdiPaperclipLock,
+  mdiPaperclipMinus,
+  mdiPaperclipOff,
+  mdiPaperclipRemove,
+  mdiSend,
+} from "@mdi/js";
+import SendFiles from "./sendfiles";
 
 export default function MessageForm() {
   const { selectedUserId, loggedUserId } = useSelector((state) => state.users);
   const [content, setContent] = useState("");
+  const [files, setFiles] = useState();
   const dispatch = useDispatch();
 
   function submit(e) {
@@ -33,8 +43,28 @@ export default function MessageForm() {
     setContent("");
   }
 
+  if (files) {
+    console.log("will render files");
+    return <SendFiles files={files} setFiles={setFiles} />;
+  } else {
+    console.log("Won't render files");
+  }
+
   return (
     <form action="" onSubmit={submit} className={styles.messageform}>
+      <label className={content === "" ? styles.gray : ""}>
+        <Icon path={mdiPaperclip} size={1} />
+        <input
+          multiple
+          type="file"
+          name="file"
+          onChange={(e) => {
+            console.log({ files: e.target.files });
+            setFiles(e.target.files);
+            dispatch(selectedFiles());
+          }}
+        />
+      </label>
       <input
         type="text"
         name="message"

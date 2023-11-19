@@ -8,19 +8,19 @@ import { useEffect } from "react";
 import MessageForm from "./send";
 import Icon from "@mdi/react";
 import { mdiAccount } from "@mdi/js";
+
 export default function Messages() {
-  const { bundles } = useSelector((state) => state.messages);
+  const { bundles, haveSelectedFiles } = useSelector((state) => state.messages);
   const { loggedUserId, selectedUserId, users } = useSelector(
     (state) => state.users
   );
   const dispatch = useDispatch();
   const selectedUser = users.find((user) => user._id === selectedUserId);
-  const loggedUser = users.find((user) => user.id === loggedUserId);
 
   if (!selectedUser) {
     return (
       <>
-        <div>
+        <div className={styles.unselected}>
           <i>Select a user to message!</i>
         </div>
       </>
@@ -36,28 +36,6 @@ export default function Messages() {
   );
 
   let messages = selectedUserBundle ? selectedUserBundle.messages : [];
-  // useEffect(() => {
-  //   // console.log({ bundles, selectedUserId });
-  //   if (!selectedUserBundle && selectedUserId !== null) {
-  //     dispatch(startedEmptyChat({ userId: selectedUserId }));
-  //   }
-  // }, [selectedUserBundle, selectedUserId]);
-
-  //   setMessages((messages) => {
-  //     const bundle = messages.find((bundle) => bundle.id === message.sentTo);
-  //     if (bundle) {
-  //       return messages.map((b) =>
-  //         b === bundle
-  //           ? { id: message.sentTo, messages: [...bundle.messages, message] }
-  //           : b
-  //       );
-  //     } else {
-  //       return [...messages, { id: message.sentTo, messages: [message] }];
-  //     }
-  //   });
-  //   socket.emit("send_message", message);
-  //   e.target.message.value = "";
-  // }
 
   const typing = selectedUser.status === "Typing" && (
     <div className={styles.typing + " " + styles.message + " " + styles.arrow}>
@@ -69,29 +47,36 @@ export default function Messages() {
     </div>
   );
 
+  const url = selectedUser.avatar;
+
   return (
     <div className={styles.messages + " messages"}>
       <div className={styles.header}>
-        <Icon path={mdiAccount} size={1.5} />
+        <div className={styles.profilePicture + " profile-pic"}>
+          {url ? <img src={url} /> : <Icon path={mdiAccount} size={1.5} />}
+        </div>
+        {/* <Icon path={mdiAccount} size={1.5} /> */}
         <div className={styles.right}>
           <div className={styles.name}>{selectedUser.username}</div>
           <div className={styles.status}>{selectedUser.status}</div>
         </div>
       </div>
-      <div className={styles.content}>
-        {messages &&
-          messages.map((message, i) => (
-            <Message
-              key={message.id || i}
-              message={message}
-              arrow={
-                (i !== 0 && message.sentBy !== messages[i - 1].sentBy) ||
-                i === 0
-              }
-            />
-          ))}
-        {typing}
-      </div>
+      {!haveSelectedFiles && (
+        <div className={styles.content}>
+          {messages &&
+            messages.map((message, i) => (
+              <Message
+                key={message.id || i}
+                message={message}
+                arrow={
+                  (i !== 0 && message.sentBy !== messages[i - 1].sentBy) ||
+                  i === 0
+                }
+              />
+            ))}
+          {typing}
+        </div>
+      )}
       <MessageForm />
     </div>
   );

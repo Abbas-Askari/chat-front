@@ -25,7 +25,7 @@ export default function Users({}) {
 
         {filteredUsers?.map(
           (user) =>
-            loggedUser.id !== user._id && <User key={user._id} user={user} />
+            loggedUserId !== user._id && <User key={user._id} user={user} />
         )}
       </div>
     </div>

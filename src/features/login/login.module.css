@@ -30,7 +30,8 @@
   /* gap: 0.5em; */
 }
 
-.formGroup input {
+.formGroup input,
+.formGroup label:has(> input) {
   /* background-color: #2a3942; */
   background-color: var(--profile-bg);
   padding: 0.5em 1em;
@@ -75,6 +76,15 @@
   color: lightblue;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.formGroup input[type="file"] {
+  /* cursor: pointer; */
+  display: none;
+}
+
+.form label:has(> input) {
+  cursor: pointer;
 }
 
 .change {

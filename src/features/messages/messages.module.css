@@ -23,6 +23,17 @@
   /* box-sizing: border-box; */
 }
 
+.messages .messageform input[type="file"] {
+  display: none;
+}
+
+.messages .messageform label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+}
+
 .messages input {
   flex: 1;
   font-size: 1.2rem;
@@ -48,18 +59,6 @@
   box-sizing: border-box;
 }
 
-/* .messages button {
-  background-color: transparent;
-  outline: 1px solid green;
-  outline: none;
-  border: 2px solid white;
-  color: white;
-  font-weight: bold;
-  font-size: 1.25rem;
-  padding: 0.25rem 1.5rem;
-  border-radius: 1rem;
-  background-color: red;
-} */
 .messages button {
   background-color: transparent;
   border: none;
@@ -107,10 +106,15 @@
 
 .isMy.message {
   align-self: flex-end;
-  padding-right: 1.5rem;
+  /* padding-right: 1.5rem; */
   background-color: #005c4b;
 
+  /* padding-bottom: 0.75rem; */
+}
+
+.isMy.message .text {
   padding-bottom: 0.75rem;
+  padding-right: 1.5rem;
 }
 
 .message.isMy.arrow {
@@ -126,7 +130,7 @@
 .message {
   max-width: 55%;
   align-self: flex-start;
-  padding: 0.5rem 1rem;
+  /* padding: 0.5rem 1rem; */
   width: fit-content;
   background-color: #202c33;
 
@@ -137,14 +141,25 @@
   /* overflow: hidden; */
 }
 
+.message:has(> img),
+.arrow.message:has(> img),
+.isMy.message:has(> img),
+.arrow.isMy.message:has(> img) {
+  border-radius: 0.5rem;
+}
+
 .message .text {
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
+  padding: 0.5rem 1rem;
+}
+
+.message {
+  overflow-wrap: anywhere;
 }
 
 .message.arrow {
   border-radius: 0 1.5rem 1.5rem 1.5rem;
   &::after {
+    z-index: 0;
     position: absolute;
     content: "";
     top: 0;
@@ -204,9 +219,53 @@
   pointer-events: none;
 }
 
+.message img {
+  object-fit: contain;
+  width: calc(100% - 1rem);
+  padding: 0.5rem;
+  padding-bottom: 0;
+}
+
 .time {
   position: absolute;
   bottom: 0;
   right: 1.5rem;
   font-size: 0.7rem;
 }
+
+.unselected {
+  background-color: #0b141a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profilePicture {
+  width: 2.25rem;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  font-size: 0.9rem;
+}
+.attachment .fileSize {
+  font-size: 0.8em;
+}
+
+.attachment > :last-child {
+  border: 2px solid #ffffff80;
+  padding: 1px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  cursor: pointer;
+  &:hover {
+    border: 3px solid #ffffff80;
+    padding: 0px;
+  }
+}
+
+/* .attachment; */

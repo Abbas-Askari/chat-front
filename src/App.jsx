@@ -27,7 +27,8 @@ function App() {
   );
   const dispatch = useDispatch();
 
-  console.log({ loggedUserId });
+  const loggedUser = users.find((user) => user._id === loggedUserId);
+  console.log({ loggedUser });
 
   useEffect(() => {
     socket.on("connect_error", (error) => {
@@ -36,12 +37,10 @@ function App() {
     });
     if (!socket.connected) {
       if (token) {
-        console.log("Trying to connext");
+        console.log("Trying to connect");
 
         dispatch(initServerListenersAsync());
         dispatch(connect({ token }));
-        // socket.auth = { token };
-        // socket.connect();
       }
     }
     return () => socket.off("connect_error");
@@ -51,10 +50,8 @@ function App() {
     const callback = (message) => {
       // cb({ ok: true });
       dispatch(gotMessage({ message, loggedUserId }));
-      console.log({ message });
       dispatch(recievedMessageAsync(message));
       if (selectedUserId === message.sentBy) {
-        console.log({ sentBy: message.sentBy, selectedUserId });
         dispatch(readAllMessagesOfUserAsync(selectedUserId));
       }
     };
@@ -63,7 +60,6 @@ function App() {
     socket.on("recive_initial_messages", ({ messages }) => {
       for (let message of messages) {
         dispatch(gotMessage({ message, loggedUserId }));
-        console.log({ message });
         dispatch(recievedMessageAsync(message));
       }
     });

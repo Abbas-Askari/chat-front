@@ -1,0 +1,98 @@
+.sendFiles {
+  /* background: black; */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2rem;
+  position: relative;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  justify-content: space-between;
+  /* width: min-content; */
+  max-height: calc(100% - 7rem);
+  /* max-height: 70%; */
+  /* overflow: hidden; */
+  align-items: stretch;
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.top {
+  text-align: center;
+}
+
+.scroll {
+  /* width: 60%; */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex: 1;
+  padding-left: 4rem;
+  /* pl to balance send on right and nothing on left */
+}
+
+.scroll > .fileIcon {
+  box-sizing: border-box;
+  border-radius: 0.75em;
+  border: 1px solid #ffffff80;
+  /* padding: 1px; */
+  padding: calc(0.5em + 1px);
+}
+
+.fileIcon.selected {
+  border: 2px solid #00a884;
+  padding: calc(0.5em);
+  /* background-color: red; */
+}
+
+.preview {
+  background-color: #00a884;
+  /* min-width: 0; */
+  flex: 1;
+  /* flex-shrink: 1; */
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  max-height: 60%;
+  max-width: 100%;
+  aspect-ratio: auto;
+  /* object-fit: contain; */
+  /* aspect-ratio: auto; */
+  object-fit: contain;
+}
+
+.preview img {
+  flex: 1;
+  width: 100%;
+  max-height: 100%;
+  /* width: auto; */
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.bottom {
+  padding-top: 1rem;
+  display: flex;
+  border-top: 1px solid #ffffff80;
+  align-items: center;
+}
+
+.send {
+  cursor: pointer;
+  background-color: #00a884;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  width: 4rem;
+  /* height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
