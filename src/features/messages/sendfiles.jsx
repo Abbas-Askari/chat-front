@@ -15,6 +15,7 @@ import {
   unselectedFiles,
 } from "./messagesSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { formatBytes } from "./message";
 
 const SendFiles = ({ files, setFiles }) => {
   const filesOriginal = files;
@@ -22,10 +23,11 @@ const SendFiles = ({ files, setFiles }) => {
   const [selected, setSelected] = useState(files[0]);
   const url = URL.createObjectURL(selected);
   const dispatch = useDispatch();
+  const [content, setContent] = useState("");
 
   const { selectedUserId, loggedUserId } = useSelector((state) => state.users);
 
-  function sendMessage(attachment) {
+  function sendMessage(attachment, writeContent = true) {
     const message = {
       sentTo: selectedUserId,
       sentBy: loggedUserId,
@@ -34,7 +36,7 @@ const SendFiles = ({ files, setFiles }) => {
       recived: false,
       sent: false,
       read: false,
-      content: "1",
+      content: writeContent ? content : "",
       attachment: attachment,
     };
     dispatch(sentMessageAsync(message));
@@ -51,12 +53,16 @@ const SendFiles = ({ files, setFiles }) => {
       dispatch(unselectedFiles());
       setFiles(null);
       const { files } = await res.json();
-      files.forEach((file) => {
-        sendMessage(file);
+      files.forEach((file, i) => {
+        sendMessage(file, i === files.length - 1);
       });
       console.log({ files });
     }
   }
+
+  console.log(selected);
+  const showImage =
+    selected.type.startsWith("image") && !selected.type.includes("svg");
 
   return (
     <div className={styles.sendFiles}>
@@ -73,16 +79,39 @@ const SendFiles = ({ files, setFiles }) => {
         <div className="">{selected.name}</div>
       </div>
       <div className={styles.preview}>
-        <img src={url} alt="" className={""} />
+        {/* {true ? ( */}
+        {showImage ? (
+          <img src={url} alt="" className={""} />
+        ) : (
+          <div className={styles.noPreview}>
+            <Icon path={mdiFile} size={5} />
+            <div className="">
+              <div className="">
+                {selected.name} ({formatBytes(selected.size)})
+              </div>
+              <div className=""></div>
+              {/* <div className=""> */}
+              <i>No Preview available.</i>
+              {/* </div> */}
+            </div>
+          </div>
+        )}
       </div>
-      {/* <img src={url} alt="" className={styles.preview} /> */}
+      <input
+        type="text"
+        placeholder="Send a Message"
+        value={content}
+        onChange={(e) => {
+          const value = e.target.value;
+          setContent(value);
+        }}
+      />
       <div className={styles.bottom}>
         <div className={styles.scroll}>
           {files.map((file, i) => (
             <div
               key={file.name}
               className={
-                // "alsjdalkjd"
                 styles.fileIcon +
                 " " +
                 (file === selected ? styles.selected : "")

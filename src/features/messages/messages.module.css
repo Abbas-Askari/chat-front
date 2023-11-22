@@ -9,6 +9,10 @@
   /* overflow: hidden; */
 }
 
+.messages.hide {
+  display: none;
+}
+
 .messages .messageform {
   /* position: absolute;
   bottom: 0;
@@ -54,7 +58,8 @@
   flex: 1;
   padding-block: 1rem;
   padding-inline: 2rem;
-  max-width: 75vw; /* specified max width so that overflowing messages dont overflow the page*/
+  /* max-width: 75vw; */
+  /* specified max width so that overflowing messages dont overflow the page*/
   /* max width is 75% in display grid of .content the width of .messages is 3fr and 1fr of users */
   box-sizing: border-box;
 }
@@ -98,10 +103,30 @@
   box-sizing: border-box;
 }
 
-.header svg {
+.header svg:first {
   background-color: var(--profile-bg);
   border-radius: 50%;
   /* background-color: red; */
+}
+
+.header > svg:last-child {
+  cursor: pointer;
+  border-radius: 50%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: #ffffff20;
+    padding: 0.3em;
+  }
+  &:active {
+    padding: 0.4em;
+  }
+}
+
+@media (min-width: 700px) {
+  .header > svg:last-child {
+    display: none;
+  }
 }
 
 .isMy.message {
@@ -136,20 +161,25 @@
 
   position: relative;
   border-radius: 1.5rem;
-  margin: 1px;
+  margin-block: 1px;
   /* margin: 0.1rem; */
   /* overflow: hidden; */
 }
 
-.message:has(> img),
-.arrow.message:has(> img),
-.isMy.message:has(> img),
-.arrow.isMy.message:has(> img) {
+.message:has(> .attachment),
+.arrow.message:has(> .attachment),
+.isMy.message:has(> .attachment),
+.arrow.isMy.message:has(> .attachment) {
   border-radius: 0.5rem;
+  width: 55%;
 }
 
 .message .text {
   padding: 0.5rem 1rem;
+}
+
+.message:has(> .attachment) .text {
+  padding-top: 0.25rem;
 }
 
 .message {
@@ -174,8 +204,11 @@
   }
 }
 
-.right :last-child {
-  font-size: 0.65em;
+.mid {
+  margin-right: auto;
+  &:last-child {
+    font-size: 0.65em;
+  }
 }
 
 .typing .text span {
@@ -221,9 +254,8 @@
 
 .message img {
   object-fit: contain;
-  width: calc(100% - 1rem);
-  padding: 0.5rem;
-  padding-bottom: 0;
+  width: 100%;
+  /* width: calc(100% - 1rem); */
 }
 
 .time {
@@ -241,22 +273,40 @@
   align-items: center;
 }
 
+@media (max-width: 700px) {
+  .unselected {
+    display: none;
+  }
+}
+
 .profilePicture {
   width: 2.25rem;
 }
 
 .attachment {
+  margin: 0.5rem;
+  margin-bottom: 0;
+  padding: 0.5rem;
+  border-radius: inherit;
+  /* padding-bottom: 0; */
+  /* justify-content: center; */
+  /* justify-content: space-between; */
   display: flex;
   align-items: center;
   gap: 0.5em;
-  width: 100%;
   font-size: 0.9rem;
+  background-color: #00000020;
 }
+
+.attachment .mid {
+  margin-right: auto;
+}
+
 .attachment .fileSize {
   font-size: 0.8em;
 }
 
-.attachment > :last-child {
+.attachment > svg:last-child {
   border: 2px solid #ffffff80;
   padding: 1px;
   border-radius: 50%;

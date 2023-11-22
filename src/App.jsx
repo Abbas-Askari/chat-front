@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Login from "./features/login/login";
 import Users from "./features/users/users";
-import Messages from "./features/messages/messages";
+import Messages from "./features/messages/Messages";
 import socket from "./socket";
 import { useDispatch, useSelector } from "react-redux";
 

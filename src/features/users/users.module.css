@@ -36,11 +36,12 @@
   font-size: 0.65em;
   /* background-color: green; */
 }
-
-.user.selected {
-  background-color: cyan;
-  background-color: #2a3942;
+@media (min-width: 700px) {
+  .user.selected {
+    background-color: #2a3942;
+  }
 }
+
 .user input {
   appearance: none;
   position: absolute;
@@ -108,6 +109,7 @@
   border: none;
   color: inherit;
   background-color: transparent;
+  flex: 1;
 }
 
 .userslist {

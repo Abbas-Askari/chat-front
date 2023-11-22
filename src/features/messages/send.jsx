@@ -23,10 +23,15 @@ export default function MessageForm() {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState();
   const dispatch = useDispatch();
+  const { haveSelectedFiles } = useSelector((state) => state.messages);
+
+  if (!haveSelectedFiles && files) {
+    setFiles(null);
+  }
 
   function submit(e) {
     e.preventDefault();
-    if (content === "") return;
+    if (content.trim() === "") return;
     const message = {
       sentTo: selectedUserId,
       sentBy: loggedUserId,
@@ -35,7 +40,7 @@ export default function MessageForm() {
       recived: false,
       sent: false,
       read: false,
-      content: content,
+      content: content.trim(),
     };
 
     dispatch(sentMessageAsync(message));
@@ -73,14 +78,14 @@ export default function MessageForm() {
         onChange={(e) => {
           const value = e.target.value;
           setContent(value);
-          if (value !== "") {
+          if (value.trim() !== "") {
             dispatch(startedTypingToAsync(selectedUserId));
           } else {
             dispatch(finishedTypingToAsync(selectedUserId));
           }
         }}
       />
-      <button className={content === "" ? styles.gray : ""}>
+      <button className={content.trim() === "" ? styles.gray : ""}>
         <Icon path={mdiSend} size={1} />
       </button>
       {/* <button>Send</button> */}

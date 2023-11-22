@@ -1,19 +1,17 @@
 import styles from "./messages.module.css";
 import Message from "./message";
-import socket from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
-import usersSlice, { otherUserSignedIn } from "../users/usersSlice";
-import { gotMessage, startedEmptyChat } from "./messagesSlice";
-import { useEffect } from "react";
 import MessageForm from "./send";
 import Icon from "@mdi/react";
-import { mdiAccount } from "@mdi/js";
+import { mdiAccount, mdiMenu } from "@mdi/js";
+import { showUsersPane } from "./appSlice";
 
 export default function Messages() {
   const { bundles, haveSelectedFiles } = useSelector((state) => state.messages);
   const { loggedUserId, selectedUserId, users } = useSelector(
     (state) => state.users
   );
+  const { showingUsers } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const selectedUser = users.find((user) => user._id === selectedUserId);
 
@@ -50,16 +48,26 @@ export default function Messages() {
   const url = selectedUser.avatar;
 
   return (
-    <div className={styles.messages + " messages"}>
+    <div
+      className={
+        styles.messages + " messages " + (showingUsers ? styles.hide : "")
+      }
+    >
       <div className={styles.header}>
         <div className={styles.profilePicture + " profile-pic"}>
           {url ? <img src={url} /> : <Icon path={mdiAccount} size={1.5} />}
         </div>
-        {/* <Icon path={mdiAccount} size={1.5} /> */}
-        <div className={styles.right}>
+        <div className={styles.mid}>
           <div className={styles.name}>{selectedUser.username}</div>
           <div className={styles.status}>{selectedUser.status}</div>
         </div>
+        <Icon
+          path={mdiMenu}
+          size={1.5}
+          onClick={() => {
+            dispatch(showUsersPane());
+          }}
+        />
       </div>
       {!haveSelectedFiles && (
         <div className={styles.content}>

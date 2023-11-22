@@ -88,4 +88,19 @@ export const initServerListenersAsync = createAsyncThunk(
 
 const appSlice = createSlice({
   name: "app",
+  initialState: {
+    showingUsers: true,
+  },
+  reducers: {
+    showUsersPane: (state, action) => {
+      state.showingUsers = true;
+    },
+    showMessages: (state, action) => {
+      state.showingUsers = false;
+    },
+  },
 });
+
+export const { showMessages, showUsersPane } = appSlice.actions;
+
+export default appSlice.reducer;

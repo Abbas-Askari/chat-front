@@ -65,7 +65,6 @@ const messagesSlice = createSlice({
       let bundleId = action.payload.message.sentBy;
       if (action.payload.message.sentBy === action.payload.loggedUserId)
         bundleId = action.payload.message.sentTo;
-      console.log({ action });
       state.bundles
         .find((bundle) => bundle.id === bundleId)
         .messages.push(action.payload.message);

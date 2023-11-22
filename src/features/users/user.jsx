@@ -2,10 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./users.module.css";
 import { selectedUserWithId } from "./usersSlice";
 import { bindActionCreators } from "@reduxjs/toolkit";
-import { readAllMessagesOfUserAsync } from "../messages/messagesSlice";
+import {
+  readAllMessagesOfUserAsync,
+  unselectedFiles,
+} from "../messages/messagesSlice";
 import react from "../../assets/react.svg";
 import Icon from "@mdi/react";
 import { mdiAccount } from "@mdi/js";
+import { showMessages } from "../messages/appSlice";
 
 export default function User({ user }) {
   const selectedUserId = useSelector((state) => state.users.selectedUserId);
@@ -32,7 +36,9 @@ export default function User({ user }) {
         className={className}
         onClick={() => {
           dispatch(selectedUserWithId(user._id));
+          dispatch(unselectedFiles());
           console.log({ bundles });
+          dispatch(showMessages());
           dispatch(readAllMessagesOfUserAsync(user._id));
         }}
       >

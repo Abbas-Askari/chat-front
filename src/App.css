@@ -47,3 +47,13 @@
   object-fit: cover;
   aspect-ratio: 1;
 }
+
+@media (max-width: 700px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .messages {
+    grid-area: users;
+  }
+}
