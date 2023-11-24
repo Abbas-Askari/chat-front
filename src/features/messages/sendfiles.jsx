@@ -16,6 +16,7 @@ import {
 } from "./messagesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { formatBytes } from "./message";
+import { baseUrl } from "../../socket";
 
 const SendFiles = ({ files, setFiles }) => {
   const filesOriginal = files;
@@ -45,7 +46,7 @@ const SendFiles = ({ files, setFiles }) => {
   async function sendAllFiles() {
     const formData = new FormData();
     for (let file of files) formData.append("imagesToUpload", file);
-    const res = await fetch("http://localhost:3000/files", {
+    const res = await fetch(`${baseUrl}/files`, {
       method: "POST",
       body: formData,
     });

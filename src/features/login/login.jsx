@@ -29,7 +29,6 @@ export default function Login({}) {
         method: "POST",
         body: formData,
       });
-      // const res = await fetch("http://localhost:3000/users", {
       //   method: "POST",
       //   headers: {
       //     "Content-type": "application/json; charset=UTF-8",
@@ -55,7 +54,6 @@ export default function Login({}) {
       <form
         ref={formRef}
         className={styles.form}
-        // action="http://localhost:3000/users"
         // method="POST"
         onSubmit={submit}
         encType="multipart/form-data"
