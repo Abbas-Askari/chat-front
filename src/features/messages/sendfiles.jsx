@@ -46,7 +46,7 @@ const SendFiles = ({ files, setFiles }) => {
   async function sendAllFiles() {
     const formData = new FormData();
     for (let file of files) formData.append("imagesToUpload", file);
-    const res = await fetch(`${baseUrl}/files`, {
+    const res = await fetch(`${baseUrl}files`, {
       method: "POST",
       body: formData,
     });
