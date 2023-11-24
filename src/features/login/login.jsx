@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import socket, { url } from "../../socket";
+import socket, { baseUrl } from "../../socket";
 import { initServerListenersAsync } from "../messages/appSlice";
 import styles from "./login.module.css";
 import { faL } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +25,7 @@ export default function Login({}) {
       socket.connect();
     } else {
       const formData = new FormData(formRef.current);
-      const res = await fetch(`${url}/users`, {
+      const res = await fetch(`${baseUrl}/users`, {
         method: "POST",
         body: formData,
       });
