@@ -49,10 +49,8 @@ export default function MessageForm() {
   }
 
   if (files) {
-    console.log("will render files");
     return <SendFiles files={files} setFiles={setFiles} />;
   } else {
-    console.log("Won't render files");
   }
 
   return (

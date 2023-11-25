@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { getLoggedUser } from "../users/usersSlice";
 import styles from "./messages.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "@mdi/react";
 import {
   mdiArrowDownBold,
@@ -10,12 +10,20 @@ import {
   mdiFile,
 } from "@mdi/js";
 
-function downloadURI(uri, name, type) {
+async function downloadURI(uri, name, type) {
   const link = document.createElement("a");
-  link.setAttribute("href", `data:${type},` + uri);
-  // link.href = uri;
+  // link.setAttribute("href", `data:${type},` + uri);
+
+  link.href = uri;
   link.setAttribute("download", name);
   link.style.display = "none";
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+
+  const res = await fetch(uri);
+  const data = await res.blob();
+  link.href = URL.createObjectURL(data);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -35,6 +43,7 @@ export default function Message({ message, arrow }) {
   const lastMessageRef = useRef();
   const isMy = loggedUserId === message.sentBy;
   const status = message.recived ? "✓✓" : message.sent ? "✓" : "";
+  const [downloading, setDownloading] = useState(false);
 
   const className =
     styles.message +
@@ -47,17 +56,35 @@ export default function Message({ message, arrow }) {
     lastMessageRef.current.scrollIntoView({ behavior: "instant" });
   }, []);
 
-  const hasAttachment = message.attachment;
-  const type = hasAttachment && message.attachment.mimetype;
-  const showImage =
-    hasAttachment && type.startsWith("image") && !type.includes("svg");
+  let hasAttachment;
+  let type;
+  let showImage;
+  try {
+    hasAttachment = message.attachment;
+    type = hasAttachment && message.attachment.mimetype;
+    showImage =
+      hasAttachment && type.startsWith("image") && !type.includes("svg");
+  } catch {}
+  console.log({ message });
 
   return (
     <div className={className} ref={lastMessageRef}>
       {hasAttachment && (
         <div className={styles.attachment}>
+          {downloading && <div className={styles.spinner}></div>}
           {showImage ? (
-            <img src={message.attachment.url} alt="" />
+            <img
+              src={message.attachment.url}
+              alt=""
+              onClick={() => {
+                setDownloading(true);
+                downloadURI(
+                  message.attachment.url,
+                  message.attachment.originalname,
+                  message.attachment.mimetype
+                ).then(() => setDownloading(false));
+              }}
+            />
           ) : (
             <>
               <Icon path={mdiFile} size={2} />
@@ -69,13 +96,15 @@ export default function Message({ message, arrow }) {
                   {formatBytes(message.attachment.size)}
                 </div>
               </div>
+
               <Icon
                 onClick={() => {
+                  setDownloading(true);
                   downloadURI(
                     message.attachment.url,
                     message.attachment.originalname,
                     message.attachment.mimetype
-                  );
+                  ).then(() => setDownloading(false));
                 }}
                 path={mdiArrowDownBold}
                 size={1.5}

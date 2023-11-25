@@ -18,6 +18,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { formatBytes } from "./message";
 import { baseUrl } from "../../socket";
 
+function convert(file) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+}
+
 const SendFiles = ({ files, setFiles }) => {
   const filesOriginal = files;
   files = Array.from(files);
@@ -29,6 +42,7 @@ const SendFiles = ({ files, setFiles }) => {
   const { selectedUserId, loggedUserId } = useSelector((state) => state.users);
 
   function sendMessage(attachment, writeContent = true) {
+    attachment._id = attachment.id;
     const message = {
       sentTo: selectedUserId,
       sentBy: loggedUserId,
@@ -40,12 +54,17 @@ const SendFiles = ({ files, setFiles }) => {
       content: writeContent ? content : "",
       attachment: attachment,
     };
+
+    console.log("Sneding: ", message);
     dispatch(sentMessageAsync(message));
   }
 
   async function sendAllFiles() {
     const formData = new FormData();
     for (let file of files) formData.append("imagesToUpload", file);
+    // for (let file of files) {
+    //   formData.append("imagesToUpload", await convert(file));
+    // }
     const res = await fetch(`${baseUrl}files`, {
       method: "POST",
       body: formData,

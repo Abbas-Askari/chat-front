@@ -37,7 +37,6 @@ export default function User({ user }) {
         onClick={() => {
           dispatch(selectedUserWithId(user._id));
           dispatch(unselectedFiles());
-          console.log({ bundles });
           dispatch(showMessages());
           dispatch(readAllMessagesOfUserAsync(user._id));
         }}
