@@ -56,7 +56,7 @@ const usersSlice = createSlice({
     },
 
     signedIn: (state, action) => {
-      state.loggedUserId = action.payload.id;
+      state.loggedUserId = action.payload.id || action.payload._id;
     },
 
     selectedUserWithId: (state, action) => {

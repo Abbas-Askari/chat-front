@@ -34,7 +34,9 @@ export const initServerListenersAsync = createAsyncThunk(
       if (token) {
         localStorage.setItem("token", token);
       }
+      console.log({ user });
       dispatch(signedIn(user));
+      socket.emit("ready_to_recive");
     });
 
     // (() => {

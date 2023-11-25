@@ -68,6 +68,11 @@ const messagesSlice = createSlice({
       state.bundles
         .find((bundle) => bundle.id === bundleId)
         .messages.push(action.payload.message);
+      console.log({
+        message: action.payload.message,
+        bundleId,
+        userId: action.payload.loggedUserId,
+      });
     },
 
     sentSuccessfully: (state, action) => {

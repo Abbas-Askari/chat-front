@@ -25,6 +25,8 @@ function App() {
   const { loggedUserId, users, selectedUserId } = useSelector(
     (state) => state.users
   );
+
+  console.log({ loggedUserId });
   const dispatch = useDispatch();
 
   const loggedUser = users.find((user) => user._id === loggedUserId);
@@ -47,6 +49,13 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (loggedUser != null) {
+      console.log("READY!", loggedUserId);
+      socket.emit("ready_to_recive");
+    }
+  }, [loggedUserId]);
+
+  useEffect(() => {
     const callback = (message) => {
       // cb({ ok: true });
       dispatch(gotMessage({ message, loggedUserId }));
@@ -56,8 +65,9 @@ function App() {
       }
     };
     socket.on("recieve_message", callback);
-
+    console.log("installed", loggedUserId);
     socket.on("recive_initial_messages", ({ messages }) => {
+      console.log(messages, loggedUserId);
       for (let message of messages) {
         dispatch(gotMessage({ message, loggedUserId }));
         dispatch(recievedMessageAsync(message));
@@ -65,6 +75,7 @@ function App() {
     });
 
     return () => {
+      console.log("UNinstalled");
       socket.off("recieve_message", callback);
       socket.off("recive_initial_messages");
     };
