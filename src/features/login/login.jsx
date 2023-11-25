@@ -25,7 +25,7 @@ export default function Login({}) {
       socket.connect();
     } else {
       const formData = new FormData(formRef.current);
-      const res = await fetch(`${baseUrl}/users`, {
+      const res = await fetch(`${baseUrl}users`, {
         method: "POST",
         body: formData,
       });
