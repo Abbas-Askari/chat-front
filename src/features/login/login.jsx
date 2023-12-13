@@ -73,7 +73,7 @@ export default function Login({}) {
         <div className={styles.formGroup}>
           <label htmlFor="password">Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             placeholder="Password"
             id="password"
