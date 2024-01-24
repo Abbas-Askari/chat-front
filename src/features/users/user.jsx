@@ -42,9 +42,28 @@ export default function User({ user }) {
         }}
       >
         {/* <img src={react}></img> */}
-        <div className={styles.profilePicture + " profile-pic"}>
+        {/* <div className={styles.profilePicture + " profile-pic"}>
           {url ? <img src={url} /> : <Icon path={mdiAccount} size={1.5} />}
+        </div> */}
+
+        <div
+          className={`avatar  ${
+            ["Online", "Typing"].includes(user.status) ? "online" : "offline"
+          }`}
+        >
+          <div className="w-12 rounded-full">
+            {url ? (
+              <img src={url} />
+            ) : (
+              <div className="bg-neutral text-neutral-content h-full flex justify-center items-center rounded-full">
+                <span className="text-xl">
+                  {user.username[0].toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
+
         <div className={styles.right}>
           <div className={styles.username}>{user.username}</div>
           <div className={styles.status}>{user.status}</div>

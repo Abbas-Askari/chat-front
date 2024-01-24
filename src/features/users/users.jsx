@@ -14,7 +14,7 @@ export default function Users({}) {
   );
 
   return (
-    <div className={styles.users + " users"}>
+    <div className={styles.users + " users "}>
       <Header />
       <Search />
       <div className={styles.userslist}>

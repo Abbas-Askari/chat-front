@@ -253,9 +253,9 @@
 }
 
 .message img {
-  object-fit: contain;
+  /* object-fit: contain;
   width: 100%;
-  cursor: pointer;
+  cursor: pointer; */
   /* width: calc(100% - 1rem); */
 }
 
@@ -298,9 +298,6 @@
   font-size: 0.9rem;
   background-color: #00000020;
   position: relative;
-}
-
-img {
 }
 
 .attachment .spinner {

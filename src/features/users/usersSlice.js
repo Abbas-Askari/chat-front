@@ -52,6 +52,7 @@ const usersSlice = createSlice({
     },
 
     gotUsers: (state, action) => {
+      console.log("Got users: ", action.payload);
       state.users = action.payload;
     },
 

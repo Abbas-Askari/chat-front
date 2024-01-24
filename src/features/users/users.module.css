@@ -77,9 +77,9 @@
   position: relative;
 }
 
-.header .name {
+/* .header .name {
   margin-right: auto;
-}
+} */
 
 /* .header svg:first-child {
   background-color: var(--profile-bg);

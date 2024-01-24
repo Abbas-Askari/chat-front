@@ -16,6 +16,7 @@ import {
 } from "./features/messages/messagesSlice";
 import { faDisplay } from "@fortawesome/free-solid-svg-icons";
 import { recivedError } from "./features/login/connectionSlice";
+import Settings from "./features/settings/settings";
 
 const token = localStorage.getItem("token");
 
@@ -91,6 +92,7 @@ function App() {
             {users.length !== 0 && <Users />}
             <Messages />
           </div>
+          <Settings />
         </>
       )}
     </>

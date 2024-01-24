@@ -5,11 +5,43 @@ import styles from "./login.module.css";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { clearedErrors, recivedError } from "./connectionSlice";
+import Icon from "@mdi/react";
+import { mdiAccount, mdiUpload } from "@mdi/js";
+
+// take the file input and send it to the server as base64 string avatart
+
+export async function fileToBase64(file) {
+  const reader = new FileReader();
+  const fileCompressed = await compressImage(file, {
+    quality: Math.min(50000 / file.size, 1),
+  });
+  reader.readAsDataURL(fileCompressed);
+  return new Promise((resolve, reject) => {
+    reader.addEventListener("load", () => {
+      resolve(reader.result);
+    });
+    reader.addEventListener("error", (e) => {
+      reject(e);
+    });
+  });
+}
+
+async function compressImage(file, { quality = 1, type = file.type }) {
+  const imageBitmap = await createImageBitmap(file);
+  const canvas = document.createElement("canvas");
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(imageBitmap, 0, 0);
+  return await new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+}
 
 export default function Login({}) {
   const dispatch = useDispatch();
-  const [isSignUp, setIsSignUp] = useState(true);
-  const [filename, setFilename] = useState("Select a file");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [avatar, setAvatar] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const formRef = useRef();
   const { connectionError, connected } = useSelector(
     (state) => state.connection
@@ -17,24 +49,35 @@ export default function Login({}) {
 
   async function submit(e) {
     e.preventDefault();
+    dispatch(clearedErrors());
     const username = e.target.username.value;
     const password = e.target.password.value;
+    setLoading(true);
     if (!isSignUp) {
       socket.auth = { username, password };
       dispatch(initServerListenersAsync());
       socket.connect();
     } else {
-      const formData = new FormData(formRef.current);
+      // const res = await fetch(`${baseUrl}users`, {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     username,
+      //     password,
+      //     avatar,
+      //   }),
+      // });
+      // make a post request to the server
       const res = await fetch(`${baseUrl}users`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          avatar,
+        }),
       });
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type": "application/json; charset=UTF-8",
-      //   },
-      //   body: JSON.stringify({ username, password, file }),
-      // });
       const data = await res.json();
       if (res.ok) {
         dispatch(clearedErrors());
@@ -43,6 +86,7 @@ export default function Login({}) {
         dispatch(recivedError({ error: data.error }));
       }
     }
+    setLoading(false);
   }
 
   function change() {
@@ -51,13 +95,7 @@ export default function Login({}) {
 
   return (
     <div className={styles.container}>
-      <form
-        ref={formRef}
-        className={styles.form}
-        // method="POST"
-        onSubmit={submit}
-        encType="multipart/form-data"
-      >
+      <form ref={formRef} className={styles.form} onSubmit={submit}>
         <div className={styles.header}>{isSignUp ? "Sign Up" : "Sign In"}</div>
         <div className={styles.formGroup}>
           <label htmlFor="username">Username</label>
@@ -78,29 +116,48 @@ export default function Login({}) {
             placeholder="Password"
             id="password"
           />
-          {/* <span className={styles.error}>Incorrect Username</span> */}
         </div>
 
         {isSignUp && (
           <div className={styles.formGroup}>
             <label htmlFor="avatar">Avatar</label>
-            <label>
-              {filename}
-              <input
-                onChange={(e) => {
-                  console.log({ e: e.target });
-                  setFilename(e.target.value.split("\\").at(-1));
+            <input
+              onChange={(e) => {
+                fileToBase64(e.target.files[0]).then((data) => setAvatar(data));
+              }}
+              type="file"
+              name="avatar"
+              id="avatar"
+            />
+            {
+              <div
+                onClick={() => {
+                  document.querySelector("#avatar").click();
                 }}
-                type="file"
-                name="avatar"
-                id="avatar"
-              />
-            </label>
+                className={styles.formGroup + " " + styles.avatar}
+              >
+                {avatar ? (
+                  <img src={avatar} />
+                ) : (
+                  <Icon path={mdiUpload} size={2} />
+                )}
+              </div>
+            }
           </div>
         )}
 
         <div className={styles.formGroup}>
-          <button>{isSignUp ? "Sign Up" : "Log In"}</button>
+          <button>
+            {loading ? (
+              <span className={styles.loader}>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            ) : (
+              <>{isSignUp ? "Sign Up" : "Log In"}</>
+            )}
+          </button>
         </div>
         {!isSignUp ? (
           <div className={styles.change}>

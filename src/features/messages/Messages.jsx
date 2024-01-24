@@ -54,10 +54,26 @@ export default function Messages() {
       }
     >
       <div className={styles.header}>
-        <div className={styles.profilePicture + " profile-pic"}>
-          {url ? <img src={url} /> : <Icon path={mdiAccount} size={1.5} />}
+        <div
+          className={`avatar  ${
+            ["Online", "Typing"].includes(selectedUser.status)
+              ? "online"
+              : "offline"
+          }`}
+        >
+          <div className="w-12 rounded-full h-12 self-center">
+            {url ? (
+              <img src={url} />
+            ) : (
+              <div className="bg-neutral text-neutral-content h-full flex justify-center items-center rounded-full">
+                <span className="text-xl">
+                  {selectedUser.username[0].toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-        <div className={styles.mid}>
+        <div className={styles.mid + " self-center"}>
           <div className={styles.name}>{selectedUser.username}</div>
           <div className={styles.status}>{selectedUser.status}</div>
         </div>
